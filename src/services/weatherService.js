@@ -5,7 +5,7 @@ const BASE_URL="https://api.openweathermap.org/data/2.5"
 
 
 const formatToLocalTime = (secs,zone,format="cccc, dd LLL yyyy' | Local time: 'hh:mm a") => DateTime
-.fromSeconds(0.01).setZone(zone).toFormat(format);
+.fromSeconds(secs).setZone(zone).toFormat(format);
 
 const getWeatherData = (infoType, searchParams) => {
 
@@ -31,22 +31,22 @@ const getWeatherData = (infoType, searchParams) => {
              sunrise, sunset, details, icon, speed
     }}
     const formatForecastWeather = (data) => {
-        let {timezone, list, hourly} = data;
-        list = list.slice(1, 6).map((d)=>{
+        let {timezone,list, hourly} = data;
+      let listdata = list.slice(1, 6).map(d=>{
             return{
                 title:formatToLocalTime(d.dt, timezone, 'ccc'),
                 temp:d.main.temp,
                 icon:d.weather[0].icon
             }
         })
-        hourly = list.slice(1, 6).map((d)=>{
+        hourly = list.slice(1, 6).map(d=>{
             return{
                 title:formatToLocalTime(d.dt, timezone, 'hh:mm a'),
                 temp:d.main.temp,
                 icon:d.weather[0].icon
             }
         })
-        return {timezone, list, hourly}
+        return {timezone, listdata, hourly}
     }
 const getFormattedWeatherData = async( searchParams) => {
 
